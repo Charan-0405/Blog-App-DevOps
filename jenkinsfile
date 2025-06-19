@@ -1,0 +1,32 @@
+pipeline {
+  agent any
+
+  environment {
+    DOCKERHUB_CRED = credentials('dockerhub')
+  }
+
+  stages {
+    stage('Build Frontend') {
+      steps {
+        sh 'docker build -t charan0405/blog-frontend:latest ./frontend'
+      }
+    }
+    stage('Build Backend') {
+      steps {
+        sh 'docker build -t charan0405/blog-backend:latest ./backend'
+      }
+    }
+    stage('Push to DockerHub') {
+      steps {
+        sh 'docker login -u $DOCKERHUB_CRED_USR -p $DOCKERHUB_CRED_PSW'
+        sh 'docker push charan0405/blog-frontend:latest'
+        sh 'docker push charan0405/blog-backend:latest'
+      }
+    }
+    stage('Deploy to Kubernetes') {
+      steps {
+        sh 'kubectl apply -f k8s/'
+      }
+    }
+  }
+}

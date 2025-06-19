@@ -1,0 +1,39 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/monitoring
+- name: Install curl
+  apt:
+    name: curl
+    state: present
+    update_cache: yes
+
+- name: Install Helm
+  shell: |
+    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+  args:
+    executable: /bin/bash
+
+- name: Add Prometheus Helm repo
+  shell: |
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo update
+  args:
+    executable: /bin/bash
+
+- name: Create namespace for monitoring
+  shell: |
+    kubectl create namespace monitoring
+  args:
+    executable: /bin/bash
+  ignore_errors: yes
+
+- name: Install kube-prometheus-stack (Prometheus + Grafana)
+  shell: |
+    helm install monitoring prometheus-community/kube-prometheus-stack \
+      --namespace monitoring \
+      --set grafana.service.type=NodePort \
+      --set prometheus.service.type=NodePort \
+      --set grafana.adminPassword='admin123' \
+      --set prometheus.prometheusSpec.retention='1d'
+  args:
+    executable: /bin/bash

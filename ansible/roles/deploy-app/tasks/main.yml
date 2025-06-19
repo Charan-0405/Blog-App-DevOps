@@ -1,0 +1,11 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/deploy-app
+- name: Clone GitHub project repo
+  git:
+    repo: 'https://github.com/Charan-0405/Blog-App-DevOps.git'
+    dest: /home/ubuntu/devops-blog
+    force: yes
+
+- name: Apply K8s YAMLs
+  shell: kubectl apply -f /home/ubuntu/devops-blog/k8s/
