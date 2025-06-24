@@ -37,5 +37,17 @@ pipeline {
         sh 'kubectl apply -f k8s/'
       }
     }
+    stage('Restart Frontend Deployment') {
+  steps {
+    // For image updates
+    sh 'kubectl rollout restart deployment blog-frontend'
+  }
+}
+
+stage('Restart Backend Deployment') {
+  steps {
+    sh 'kubectl rollout restart deployment blog-backend'
+  }
+}
   }
 }
