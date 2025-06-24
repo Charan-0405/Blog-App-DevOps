@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: blog-frontend
 spec:
+  type: NodePort
   selector:
     app: blog-frontend
   ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
-  type: NodePort
+    - port: 80
+      targetPort: 80
+      nodePort: 32004  
