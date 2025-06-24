@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog-backend
+  template:
+    metadata:
+      labels:
+        app: blog-backend
+    spec:
+      containers:
+        - name: backend
+          image: charan0405/blog-backend
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://charanmoigari2000:Cherry0405@cluster0.mteyjhg.mongodb.net/Blog-App"
+            - name: JWT_SECRET
+              value: Charan0405

@@ -1,0 +1,8 @@
+- name: Setup CI/CD environment
+  hosts: localhost
+  become: true
+
+  roles:
+    - docker
+    - jenkins
+    - kubernetes
